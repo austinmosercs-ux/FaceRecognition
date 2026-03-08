@@ -224,67 +224,64 @@ def extract_features(points: List[Tuple[float, float]]) -> Dict[str, float]:
     try:
         # ----- Shared denominators used by multiple features -----
 
-        # Distance between points 8 and 13 (denominator for features 1, 2, 6)
-        dist_8_13 = euclidean_distance(points[7], points[12])  # 1-indexed pts 8 & 13
+        # Distance between points 9 and 14 (0-based: 8 and 13)
+        dist_9_14 = euclidean_distance(points[8], points[13])
 
-        # Distance between points 20 and 21 (denominator for features 3, 5, 7)
-        dist_20_21 = euclidean_distance(points[19], points[20])  # 1-indexed pts 20 & 21
+        # Distance between points 21 and 22 (0-based: 20 and 21)
+        dist_21_22 = euclidean_distance(points[20], points[21])
 
         # ----- Feature 1: Eye Length Ratio -----
-        # "length of eye (maximum of two) over distance between points 8 and 13"
-        # Left eye span:  points 5–6  (0-indexed: 4, 5)
-        # Right eye span: points 7–8  (0-indexed: 6, 7)
-        left_eye_length = euclidean_distance(points[4], points[5])
-        right_eye_length = euclidean_distance(points[6], points[7])
+        # Left eye span:  points 9, 10 (0-based)
+        # Right eye span: points 11, 12 (0-based)
+        left_eye_length = euclidean_distance(points[9], points[10])
+        right_eye_length = euclidean_distance(points[11], points[12])
         max_eye_length = max(left_eye_length, right_eye_length)
-        features['eye_length_ratio'] = (max_eye_length / dist_8_13
-                                        if dist_8_13 != 0 else 0)
+        features['eye_length_ratio'] = (max_eye_length / dist_9_14
+                                        if dist_9_14 != 0 else 0)
 
         # ----- Feature 2: Eye Distance Ratio -----
-        # "distance between center of two eyes over distance between points 8 and 13"
-        # Center of left eye  = midpoint of points 5 & 6
-        # Center of right eye = midpoint of points 7 & 8
-        left_eye_center = ((points[4][0] + points[5][0]) / 2,
-                           (points[4][1] + points[5][1]) / 2)
-        right_eye_center = ((points[6][0] + points[7][0]) / 2,
-                            (points[6][1] + points[7][1]) / 2)
+        # Center of left eye  = midpoint of points 9 & 10
+        # Center of right eye = midpoint of points 11 & 12
+        left_eye_center = ((points[9][0] + points[10][0]) / 2,
+                           (points[9][1] + points[10][1]) / 2)
+        right_eye_center = ((points[11][0] + points[12][0]) / 2,
+                            (points[11][1] + points[12][1]) / 2)
         eye_center_distance = euclidean_distance(left_eye_center,
                                                  right_eye_center)
-        features['eye_distance_ratio'] = (eye_center_distance / dist_8_13
-                                          if dist_8_13 != 0 else 0)
+        features['eye_distance_ratio'] = (eye_center_distance / dist_9_14
+                                          if dist_9_14 != 0 else 0)
 
         # ----- Feature 3: Nose Ratio -----
-        # "Distance between points 15 and 16 over distance between 20 and 21"
-        dist_15_16 = euclidean_distance(points[14], points[15])  # 1-indexed pts 15 & 16
-        features['nose_ratio'] = (dist_15_16 / dist_20_21
-                                  if dist_20_21 != 0 else 0)
+        # Distance between points 15 and 16 (0-based) / dist(20, 21)
+        dist_16_17 = euclidean_distance(points[15], points[16])
+        features['nose_ratio'] = (dist_16_17 / dist_21_22
+                                  if dist_21_22 != 0 else 0)
 
         # ----- Feature 4: Lip Size Ratio -----
-        # "Distance between points 2 and 3 over distance between 17 and 18"
-        dist_2_3 = euclidean_distance(points[1], points[2])    # 1-indexed pts 2 & 3
-        dist_17_18 = euclidean_distance(points[16], points[17])  # 1-indexed pts 17 & 18
-        features['lip_size_ratio'] = (dist_2_3 / dist_17_18
-                                      if dist_17_18 != 0 else 0)
+        # Distance between points 2 and 3 (0-based) / dist(17, 18)
+        dist_3_4 = euclidean_distance(points[2], points[3])
+        dist_18_19 = euclidean_distance(points[17], points[18])
+        features['lip_size_ratio'] = (dist_3_4 / dist_18_19
+                                      if dist_18_19 != 0 else 0)
 
         # ----- Feature 5: Lip Length Ratio -----
-        # "Distance between points 2 and 3 over distance between 20 and 21"
-        features['lip_length_ratio'] = (dist_2_3 / dist_20_21
-                                        if dist_20_21 != 0 else 0)
+        # Distance between points 2 and 3 (0-based) / dist(20, 21)
+        features['lip_length_ratio'] = (dist_3_4 / dist_21_22
+                                        if dist_21_22 != 0 else 0)
 
         # ----- Feature 6: Eyebrow Length Ratio -----
-        # "Distance between points 4 and 5 (or 6 and 7, whichever larger)
-        #  over distance between 8 and 13"
-        eyebrow_left = euclidean_distance(points[3], points[4])   # 1-indexed pts 4 & 5
-        eyebrow_right = euclidean_distance(points[5], points[6])  # 1-indexed pts 6 & 7
+        # Points 4,5 and 6,7 (0-based) for eyebrow spans
+        eyebrow_left = euclidean_distance(points[4], points[5])
+        eyebrow_right = euclidean_distance(points[6], points[7])
         max_eyebrow = max(eyebrow_left, eyebrow_right)
-        features['eyebrow_length_ratio'] = (max_eyebrow / dist_8_13
-                                            if dist_8_13 != 0 else 0)
+        features['eyebrow_length_ratio'] = (max_eyebrow / dist_9_14
+                                            if dist_9_14 != 0 else 0)
 
         # ----- Feature 7: Aggressive Ratio -----
-        # "Distance between points 10 and 19 over distance between 20 and 21"
-        dist_10_19 = euclidean_distance(points[9], points[18])  # 1-indexed pts 10 & 19
-        features['aggressive_ratio'] = (dist_10_19 / dist_20_21
-                                        if dist_20_21 != 0 else 0)
+        # Distance between points 10 and 19 (0-based) / dist(20, 21)
+        dist_11_20 = euclidean_distance(points[10], points[19])
+        features['aggressive_ratio'] = (dist_11_20 / dist_21_22
+                                        if dist_21_22 != 0 else 0)
 
     except IndexError as e:
         print(f"Error extracting features: {e}")

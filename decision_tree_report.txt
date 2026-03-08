@@ -5,28 +5,28 @@ Test set: m-004, m-005, w-004, w-005 (16 images)
 
 Confusion Matrix:
                   Predicted Male  Predicted Female
-  Actual Male                5                 3
-  Actual Female              4                 4
+  Actual Male                3                 5
+  Actual Female              3                 5
 
-Accuracy  : 0.5625  (56.2%)
-Precision : 0.5714
-Recall    : 0.5000
+Accuracy  : 0.5000  (50.0%)
+Precision : 0.5000
+Recall    : 0.6250
 
 File          Actual  Predicted  Correct
 ------------  ------  ---------  -------
 m-004-01.pts  Male    Male       YES    
 m-004-02.pts  Male    Female     NO     
-m-004-03.pts  Male    Female     NO     
-m-004-05.pts  Male    Male       YES    
-m-005-01.pts  Male    Male       YES    
+m-004-03.pts  Male    Male       YES    
+m-004-05.pts  Male    Female     NO     
+m-005-01.pts  Male    Female     NO     
 m-005-02.pts  Male    Female     NO     
 m-005-03.pts  Male    Male       YES    
-m-005-05.pts  Male    Male       YES    
+m-005-05.pts  Male    Female     NO     
 w-004-01.pts  Female  Male       NO     
 w-004-02.pts  Female  Female     YES    
 w-004-03.pts  Female  Female     YES    
 w-004-05.pts  Female  Female     YES    
 w-005-01.pts  Female  Male       NO     
 w-005-02.pts  Female  Female     YES    
-w-005-03.pts  Female  Male       NO     
+w-005-03.pts  Female  Female     YES    
 w-005-05.pts  Female  Male       NO     
